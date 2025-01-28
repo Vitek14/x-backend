@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const User = sequelize.define('user', {
+const User = sequelize.define('users', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -15,27 +15,27 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
   user_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  is_verified: {
-    type: DataTypes.BOOLEAN,
+   joined_date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  website: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  avatar: {
+  avatar_url: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  banner: {
+  banner_url: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -47,18 +47,23 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  lined_website: {
-    type: DataTypes.STRING,
+  followers_count: {
+    type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
+  },
+  following_count: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  verified: {
+    type: DataTypes.BOOLEAN,
   },
   birthdate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  joined_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  }
 }, {
   timestamps: false,
 });
