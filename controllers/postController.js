@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const {Op} = require("sequelize");
 
 exports.getPosts = async (req, res) => {
   try {
@@ -42,6 +43,26 @@ exports.deletePost = async (req, res) => {
     } else {
       throw new Error('User not found');
     }
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.explorePost = async (req, res) => {
+  try {
+    // Получаем все посты, исключая посты с userId=1
+    const posts = await Post.findAll({
+      where: {
+        user_id: {
+          [Op.ne]: 1 // Исключаем системного пользователя
+        }
+      }
+    });
+
+    // Перемешиваем посты и выбираем 20 случайных
+    const randomPosts = posts.sort(() => 0.5 - Math.random()).slice(0, 20);
+
+    res.json(randomPosts);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
