@@ -1,10 +1,43 @@
 const Post = require('../models/post');
+const Follower = require('../models/follower');
 const {Op} = require("sequelize");
 
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.findAll();
     res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getHome = async (req, res) => {
+  try {
+    // 1. Получаем всех подписчиков для follower_id = 1
+    const followers = await Follower.findAll({
+      where: { follower_id: 1 }
+    });
+
+    // 2. Извлекаем following_id из полученных записей
+    const followingIds = followers.map(follower => follower.following_id);
+
+    // 3. Получаем все посты от пользователей, на которых подписан follower_id = 1
+    const posts = await Post.findAll({
+      where: {
+        user_id: {
+          [Op.in]: followingIds // Используем оператор IN для получения постов от всех following_id
+        }
+      }
+    });
+
+    // 4. Перемешиваем посты
+    const shuffledPosts = posts.sort(() => 0.5 - Math.random());  // Сомнительно, нооо окей?
+
+    // 5. Обрезаем массив до 20 постов
+    const limitedPosts = shuffledPosts.slice(0, 20);
+
+    // 6. Возвращаем результат
+    res.json(limitedPosts);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
