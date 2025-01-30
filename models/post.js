@@ -17,7 +17,7 @@ const Post = sequelize.define('post', {
   },
   image_url: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   created_at: {
     type: DataTypes.DATE,
@@ -45,7 +45,7 @@ const Post = sequelize.define('post', {
   },
   parent_post_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   bookmarked: {
     type: DataTypes.BOOLEAN,
