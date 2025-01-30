@@ -3,6 +3,7 @@ const sequelize = require('../config/database');
 // /models/init.js
 const User = require('./user');  // Import models
 const Post = require('./post');
+const Follower = require('./follower');
 
 const initializeDatabase = async () => {
   try {
