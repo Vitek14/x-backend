@@ -21,12 +21,21 @@ exports.getUser = async (req, res) => {
 
 exports.getMightLike = async (req, res) => {
   try {
-    const users = await User.findAll({ order: Sequelize.literal('RANDOM()'), limit: 3 })
+    const users = await User.findAll({
+      where: {
+        id: {
+          [Sequelize.Op.ne]: 1 // Исключаем пользователя с id 1
+        }
+      },
+      order: Sequelize.literal('RANDOM()'),
+      limit: 6
+    });
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 
 
