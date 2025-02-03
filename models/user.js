@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const bcrypt = require('bcrypt');
 
 const User = sequelize.define('users', {
   id: {
@@ -59,13 +60,32 @@ const User = sequelize.define('users', {
   },
   verified: {
     type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   },
   birthdate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
 }, {
   timestamps: false,
 });
+
+User.generatePassword = async function (password) {
+  return await bcrypt.hash(password, bcrypt.genSaltSync(8));
+}
+
+User.prototype.validatePassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+}
 
 module.exports = User;
