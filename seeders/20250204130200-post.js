@@ -15,8 +15,6 @@ module.exports = {
         likes_count: 1,
         parent_post_id: null,
         bookmarked: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
     }
     ]);
   },

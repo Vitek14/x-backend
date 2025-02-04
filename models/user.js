@@ -19,9 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     // I don't tested this func, use carefully
-    static validatePassword = async function (password) {
-      return bcrypt.compare(password, this.password);
+    async validatePassword(password) {
+      return await bcrypt.compare(password, this.password);
     }
+    // static async validatePassword(password) {
+    //   return bcrypt.compare(password, this.password);
+    // }
   }
 
 

@@ -8,8 +8,6 @@ module.exports = {
       {
         follower_id: 1,
         following_id: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
     }
     ]);
   },
