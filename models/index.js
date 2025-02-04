@@ -1,22 +1,43 @@
-const sequelize = require('../config/database');
+'use strict';
 
-// /models/init.js
-const User = require('./user');  // Import models
-const Post = require('./post');
-const Follower = require('./follower');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const process = require('process');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
+const db = {};
 
-const initializeDatabase = async () => {
-  try {
-    await sequelize.authenticate();  // Test the database connection
-    console.log('Database connection has been established successfully.');
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
 
-    // Sync models with the database
-    await sequelize.sync({ force: false });  // force: true to drop tables and re-sync, force: false to create new ones
-    console.log('All models were synchronized successfully.');
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (
+      file.indexOf('.') !== 0 &&
+      file !== basename &&
+      file.slice(-3) === '.js' &&
+      file.indexOf('.test.js') === -1
+    );
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
 
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
   }
-};
+});
 
-module.exports = initializeDatabase;
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

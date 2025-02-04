@@ -1,91 +1,50 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+'use strict';
+const {
+  Model
+} = require('sequelize');
 const bcrypt = require('bcrypt');
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
 
-const User = sequelize.define('users', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  first_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  last_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  user_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-   joined_date: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  website: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  avatar_url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  banner_url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  workplace: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  location: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  followers_count: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  following_count: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  verified: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  },
-  birthdate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    static async generatePassword(password) {
+      return await bcrypt.hash(password, bcrypt.genSaltSync(8));
+    }
+
+    // I don't tested this func, use carefully
+    static validatePassword = async function (password) {
+      return bcrypt.compare(password, this.password);
+    }
   }
-}, {
-  timestamps: false,
-});
 
-User.generatePassword = async function (password) {
-  return await bcrypt.hash(password, bcrypt.genSaltSync(8));
-}
 
-User.prototype.validatePassword = async function (password) {
-  return bcrypt.compare(password, this.password);
-}
-
-module.exports = User;
+  User.init({
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+    user_name: DataTypes.STRING,
+    joined_date: DataTypes.DATE,
+    website: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    avatar_url: DataTypes.STRING,
+    banner_url: DataTypes.STRING,
+    workplace: DataTypes.STRING,
+    location: DataTypes.STRING,
+    followers_count: DataTypes.INTEGER,
+    following_count: DataTypes.INTEGER,
+    verified: DataTypes.BOOLEAN,
+    birthdate: DataTypes.DATE,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
+  return User;
+};
