@@ -1,4 +1,4 @@
-const Post = require('../models/post');
+const {Post} = require('../models');
 const Follower = require('../models/follower');
 const {Op} = require("sequelize");
 

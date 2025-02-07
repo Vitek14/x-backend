@@ -22,9 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     async validatePassword(password) {
       return await bcrypt.compare(password, this.password);
     }
-    // static async validatePassword(password) {
-    //   return bcrypt.compare(password, this.password);
-    // }
   }
 
 
