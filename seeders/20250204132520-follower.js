@@ -8,7 +8,15 @@ module.exports = {
       {
         follower_id: 1,
         following_id: 2,
-    }
+      },
+      {
+        follower_id: 3,
+        following_id: 2,
+      },
+      {
+        follower_id: 4,
+        following_id: 2,
+      }
     ]);
   },
   down(queryInterface, Sequelize) {

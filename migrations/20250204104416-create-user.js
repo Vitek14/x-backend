@@ -54,6 +54,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      posts_count: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       verified: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

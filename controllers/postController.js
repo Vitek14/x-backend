@@ -1,5 +1,5 @@
 const {Post} = require('../models');
-const Follower = require('../models/follower');
+const {Follower} = require('../models');
 const {Op} = require("sequelize");
 
 exports.getPosts = async (req, res) => {

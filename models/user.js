@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     location: DataTypes.STRING,
     followers_count: DataTypes.INTEGER,
     following_count: DataTypes.INTEGER,
+    posts_count: DataTypes.INTEGER,
     verified: DataTypes.BOOLEAN,
     birthdate: DataTypes.DATE,
     email: DataTypes.STRING,

@@ -1,4 +1,5 @@
 const {Follower} = require('../models');
+// const Follower = require('../models/follower');
 
 // Получить всех подписчиков пользователя
 exports.getFollowers = async (req, res) => {
