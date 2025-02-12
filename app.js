@@ -9,8 +9,10 @@ const authRoutes = require('./routes/authRoutes');
 const {explorePost, getHome} = require("./controllers/postController");
 const {getFollowing} = require("./controllers/followerController");
 const initializeDatabase = require('./models/index');
+const cors = require("cors")
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
