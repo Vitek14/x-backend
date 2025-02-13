@@ -8,12 +8,14 @@ module.exports = {
       {
         user_id: 2,
         type: "Login",
-        parent_id: 1
+        parent_id: 1,
+        created_at: "2025-02-12",
       },
       {
         user_id: 2,
         type: "Login",
-        parent_id: 2
+        parent_id: 2,
+        created_at: new Date(),
       }
       ]);
   },
