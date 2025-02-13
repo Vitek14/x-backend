@@ -6,6 +6,7 @@ const postRoutes = require('./routes/postRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const followerRoutes = require('./routes/followerRoutes');
 const authRoutes = require('./routes/authRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 const {explorePost, getHome} = require("./controllers/postController");
 const {getFollowing} = require("./controllers/followerController");
 const initializeDatabase = require('./models/index');
@@ -23,6 +24,7 @@ app.use('/api/home', getHome)
 app.use('/api/followers', followerRoutes)
 app.use('/api/following/:user_id', getFollowing)
 app.use('/api', authRoutes)
+app.use('/api/notifications', notificationRoutes)
 
 const PORT = process.env.PORT || 5000;
 
