@@ -1,6 +1,7 @@
-const {Post} = require('../models');
+const {Post, User} = require('../models');
 const {Follower} = require('../models');
 const {Op} = require("sequelize");
+const sequelize = require('sequelize');
 
 exports.getPosts = async (req, res) => {
   try {
@@ -26,18 +27,27 @@ exports.getHome = async (req, res) => {
       where: {
         user_id: {
           [Op.in]: followingIds // Используем оператор IN для получения постов от всех following_id
+        },
+      },
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: { exclude: ['password'] },
+          required: false
         }
-      }
+      ]
     });
 
     // 4. Перемешиваем посты
     const shuffledPosts = posts.sort(() => 0.5 - Math.random());  // Сомнительно, нооо окей?
 
-    // 5. Обрезаем массив до 20 постов
+    // // 5. Обрезаем массив до 20 постов
     const limitedPosts = shuffledPosts.slice(0, 20);
 
     // 6. Возвращаем результат
     res.json(limitedPosts);
+    // res.json(posts);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,4 +1,4 @@
-const { Notification } = require('../models');
+const { Notification, Post} = require('../models');
 
 exports.getUserNotifications = async (req, res) => {
   try {
@@ -12,3 +12,12 @@ exports.getUserNotifications = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.createNotification = async (req, res) => {
+  try {
+    const notification = await Notification.create(req.body);
+    res.status(201).json(notification);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}

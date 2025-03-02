@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Post.belongsTo(models.User, { targetKey: 'id', foreignKey: "user_id"});
+      Post.belongsTo(models.User, { targetKey: 'id', foreignKey: "user_id", as: "user" });
       // define association here
     }
   }
@@ -22,7 +24,14 @@ module.exports = (sequelize, DataTypes) => {
     views_count: DataTypes.INTEGER,
     likes_count: DataTypes.INTEGER,
     parent_post_id: DataTypes.INTEGER,
-    bookmarked: DataTypes.BOOLEAN
+    bookmarked: DataTypes.BOOLEAN,
+    // user: {
+    //   type:DataTypes.VIRTUAL,
+    //   get() {
+    //     if (!this.user_id || !this.user) return false;
+    //     return this.user;
+    //   }
+    // }
   }, {
     sequelize,
     modelName: 'Post',

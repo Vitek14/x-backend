@@ -36,7 +36,6 @@ exports.login = async (req, res) => {
       throw new Error('Email or password is not correct')
     }
     const validated = await user.validatePassword(password);
-    console.log(privateKey)
     if (validated) {
       const token = jwt.sign({
         user_id: user.id,
