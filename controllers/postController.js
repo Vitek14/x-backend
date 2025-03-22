@@ -3,6 +3,8 @@ const {Follower} = require('../models');
 const {Op} = require("sequelize");
 const sequelize = require('sequelize');
 const jwt = require("jsonwebtoken");
+const logger = require('pino')();
+
 
 exports.getPosts = async (req, res) => {
   try {
@@ -96,6 +98,65 @@ exports.updatePost = async (req, res) => {
     } else {
       throw new Error('User not found');
     }
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.likePost = async (req, res) => {
+  try {
+    const { user_id, post_id } = req.body;
+
+    // Проверяем существование лайка
+    const existingLike = await Like.findOne({
+      where: { user_id, post_id }
+    });
+
+    if (existingLike) {
+      return res.status(400).json({ error: 'Like already exists' });
+    }
+
+    // Создаем новый лайк
+    const like = await Like.create(req.body);
+
+    // Увеличиваем счетчик лайков в посте
+    await Post.increment('likes_count', {
+      where: { id: post_id }
+    });
+
+    res.status(201).json(like);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.unlikePost = async (req, res) => {
+  try {
+    // const { user_id, post_id } = req.body;
+    const post_id = req.params.post_id; // Make sure this matches your route definition
+    const user_id = req.params.user_id; // This should also match the parameter name in your path
+    console.log(user_id, post_id)
+
+    // Ищем существующий лайк
+    const existingLike = await Like.findOne({
+      where: { user_id, post_id }
+    });
+
+    if (!existingLike) {
+      return res.status(400).json({ error: 'Like does not exist' });
+    }
+
+    // Удаляем лайк
+    await Like.destroy({
+      where: { id: existingLike.id }
+    });
+
+    // Уменьшаем счетчик лайков в посте
+    await Post.decrement('likes_count', {
+      where: { id: post_id }
+    });
+
+    res.status(204).send();
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

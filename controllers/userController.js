@@ -1,4 +1,4 @@
-const {User} = require('../models');
+const {User, Like} = require('../models');
 const {Sequelize} = require("sequelize");
 
 exports.getUsers = async (req, res) => {
@@ -35,10 +35,6 @@ exports.getMightLike = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
-
-
-
-
 
 
 exports.createUser = async (req, res) => {
