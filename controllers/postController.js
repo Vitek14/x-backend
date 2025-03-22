@@ -1,4 +1,4 @@
-const {Post, User, Bookmark, Like} = require('../models');
+const {Post, User, Bookmark, Like, Comment} = require('../models');
 const {Follower} = require('../models');
 const {Op} = require("sequelize");
 const sequelize = require('sequelize');
@@ -51,6 +51,18 @@ exports.getHome = async (req, res) => {
           attributes: { exclude: ['password'] },
           required: false
         },
+        {
+          model: Comment,
+          as: "comments",
+          required: false,
+          include: [
+            {
+              model: User,
+              as: "user",
+              attributes: ['id', 'first_name', 'avatar_url']
+            }
+          ]
+        }
       ]
     });
     // const postsWithLikes = posts.map((post) =>({...post, is_liked:false}))

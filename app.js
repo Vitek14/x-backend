@@ -8,6 +8,7 @@ const followerRoutes = require('./routes/followerRoutes');
 const authRoutes = require('./routes/authRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const loginInfoRoutes = require('./routes/loginRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 const {explorePost, getHome} = require("./controllers/postController");
 const {getFollowing} = require("./controllers/followerController");
 const initializeDatabase = require('./models/index');
@@ -62,6 +63,7 @@ app.use('/api/following/:user_id', getFollowing)
 app.use('/api', authRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/login_info', loginInfoRoutes)
+app.use('/api/comments', commentRoutes)
 
 const PORT = process.env.PORT || 5000;
 
