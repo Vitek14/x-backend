@@ -15,6 +15,7 @@ const initializeDatabase = require('./models/index');
 const cors = require("cors")
 const multer = require('multer');
 const path = require('path');
+const {verifyToken} = require("./middlewares/authMiddleware");
 
 const app = express();
 app.use(cors());
@@ -56,10 +57,10 @@ app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/user_posts', postRoutes);
-app.use('/api/explore', explorePost)
-app.use('/api/home', getHome)
+app.use('/api/explore', verifyToken, explorePost)
+app.use('/api/home', verifyToken, getHome)
 app.use('/api/followers', followerRoutes)
-app.use('/api/following/:user_id', getFollowing)
+app.use('/api/following/:user_id', verifyToken, getFollowing)
 app.use('/api', authRoutes)
 app.use('/api/notifications', notificationRoutes)
 app.use('/api/login_info', loginInfoRoutes)

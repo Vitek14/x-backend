@@ -36,6 +36,25 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Post',
+    defaultScope: {
+      include: [
+        {
+          association: 'user',
+          attributes: { exclude: ['password'] },
+          required: false
+        },
+        {
+          association: "comments",
+          required: false,
+          include: [
+            {
+              association: "user",
+              attributes: ['id', 'first_name', 'avatar_url']
+            }
+          ]
+        }
+      ]
+    }
   });
   return Post;
 };

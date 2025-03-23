@@ -16,18 +16,20 @@ exports.getPosts = async (req, res) => {
 };
 
 exports.getHome = async (req, res) => {
+  // try {
+  //   const token = req.headers['x-auth-token'];
+  //   const privateKey = process.env.PRIVATE_KEY;
+  //   if (!token) {
+  //     throw new Error('No token provided');
+  //   }
+  //   try {
+  //     jwt.verify(token, privateKey);
+  //   } catch {
+  //     throw new Error('No token provided');
+  //   }
+  //   const decoded = jwt.decode(token);
   try {
-    const token = req.headers['x-auth-token'];
-    const privateKey = process.env.PRIVATE_KEY;
-    if (!token) {
-      throw new Error('No token provided');
-    }
-    try {
-      jwt.verify(token, privateKey);
-    } catch {
-      throw new Error('No token provided');
-    }
-    const decoded = jwt.decode(token);
+    const decoded = req.user;
     const user = await User.findByPk(decoded["user_id"]);
     // 1. Получаем всех подписчиков для follower_id = 1
     const followers = await Follower.findAll({
@@ -44,26 +46,6 @@ exports.getHome = async (req, res) => {
           [Op.in]: followingIds // Используем оператор IN для получения постов от всех following_id
         },
       },
-      include: [
-        {
-          model: User,
-          as: "user",
-          attributes: { exclude: ['password'] },
-          required: false
-        },
-        {
-          model: Comment,
-          as: "comments",
-          required: false,
-          include: [
-            {
-              model: User,
-              as: "user",
-              attributes: ['id', 'first_name', 'avatar_url']
-            }
-          ]
-        }
-      ]
     });
     // const postsWithLikes = posts.map((post) =>({...post, is_liked:false}))
 
