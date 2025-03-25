@@ -1,10 +1,11 @@
 const express = require('express');
-const { getPosts, createPost, updatePost, deletePost, likePost, unlikePost} = require('../controllers/postController');
+const { getPosts, getPost, createPost, updatePost, deletePost, likePost, unlikePost} = require('../controllers/postController');
 const {verifyToken} = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router.get('/', verifyToken, getPosts);
+router.get('/:id', verifyToken, getPost)
 router.post('/', verifyToken, createPost);
 router.patch('/:id', verifyToken, updatePost);
 router.delete('/:id', verifyToken, deletePost);

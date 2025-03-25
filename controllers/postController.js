@@ -15,6 +15,16 @@ exports.getPosts = async (req, res) => {
   }
 };
 
+exports.getPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findByPk(id);
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getHome = async (req, res) => {
   try {
     const decoded = req.user;
