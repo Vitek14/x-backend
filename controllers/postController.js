@@ -16,18 +16,6 @@ exports.getPosts = async (req, res) => {
 };
 
 exports.getHome = async (req, res) => {
-  // try {
-  //   const token = req.headers['x-auth-token'];
-  //   const privateKey = process.env.PRIVATE_KEY;
-  //   if (!token) {
-  //     throw new Error('No token provided');
-  //   }
-  //   try {
-  //     jwt.verify(token, privateKey);
-  //   } catch {
-  //     throw new Error('No token provided');
-  //   }
-  //   const decoded = jwt.decode(token);
   try {
     const decoded = req.user;
     const user = await User.findByPk(decoded["user_id"]);
@@ -75,8 +63,14 @@ exports.getHome = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    const post = await Post.create(req.body);
-    res.status(201).json(post);
+    // TODO: Make post.create with req.user(that is decoded user_id) + req.body
+    if (req.user.user_id !== req.body.user_id) {  // Checking decoded user and that is in body.
+      return res.status(403).json({ error: "User mismatch!" });
+    }
+    else {
+      const post = await Post.create(req.body);
+      res.status(201).json(post);
+    }
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

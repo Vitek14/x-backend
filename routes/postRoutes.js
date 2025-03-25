@@ -4,10 +4,10 @@ const {verifyToken} = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get('/', getPosts);
-router.post('/', createPost);
-router.patch('/:id', updatePost);
-router.delete('/:id', deletePost);
+router.get('/', verifyToken, getPosts);
+router.post('/', verifyToken, createPost);
+router.patch('/:id', verifyToken, updatePost);
+router.delete('/:id', verifyToken, deletePost);
 router.post('/like', verifyToken, likePost)
 router.delete('/:post_id/unlike/:user_id', verifyToken, unlikePost);
 

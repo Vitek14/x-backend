@@ -9,6 +9,15 @@ exports.verifyToken = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, privateKey);
     req.user = decoded;
+
+    // Experimental!!!
+    if (req.body.user_id) {
+      if (req.body.user_id !== req.user.user_id) {
+        return res.status(403).json({ error: 'User mismatch!' });
+      }
+    }
+
+
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid token' });
