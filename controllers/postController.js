@@ -1,4 +1,4 @@
-const {Post, User, Bookmark, Like, Comment} = require('../models');
+const {Post, User, Bookmark, Like, Comment, PostView} = require('../models');
 const {Follower} = require('../models');
 const {Op} = require("sequelize");
 const sequelize = require('sequelize');
@@ -59,8 +59,11 @@ exports.getHome = async (req, res) => {
         const like = await Like.findOne({
           where: { post_id: post.id, user_id: user.id },
         });
+        const view = await PostView.findOne({
+          where: { post_id: post.id, user_id: user.id },
+        });
         // is_liked is true if like is found, otherwise false
-        return { ...post.toJSON(), is_liked: !!like };
+        return { ...post.toJSON(), is_liked: !!like, is_viewed: !!view };
       })
     );
 
@@ -159,6 +162,23 @@ exports.unlikePost = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+exports.viewPost = async (req, res) => {
+  try {
+    const { user_id, post_id } = req.body;
+
+    // Создаем новый просмотр
+    const view = await PostView.create(req.body);
+
+    // Увеличиваем счетчик лайков в посте
+    await Post.increment('views_count', {
+      where: { id: post_id }
+    });
+    res.status(201).json(view);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}
 
 exports.deletePost = async (req, res) => {
   try {
