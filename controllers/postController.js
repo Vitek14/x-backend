@@ -1,4 +1,4 @@
-const {Post, User, Bookmark, Like, Comment, PostView} = require('../models');
+const {Post, User, Bookmark, Like, Comment, PostView, RepostView} = require('../models');
 const {Follower} = require('../models');
 const {Op} = require("sequelize");
 const sequelize = require('sequelize');
@@ -62,8 +62,11 @@ exports.getHome = async (req, res) => {
         const view = await PostView.findOne({
           where: { post_id: post.id, user_id: user.id },
         });
+        const repost = await RepostView.findOne({
+          where: { post_id: post.id, user_id: user.id },
+        });
         // is_liked is true if like is found, otherwise false
-        return { ...post.toJSON(), is_liked: !!like, is_viewed: !!view };
+        return { ...post.toJSON(), is_liked: !!like, is_viewed: !!view, is_reposted: !!repost };
       })
     );
 
@@ -172,6 +175,23 @@ exports.viewPost = async (req, res) => {
 
     // Увеличиваем счетчик лайков в посте
     await Post.increment('views_count', {
+      where: { id: post_id }
+    });
+    res.status(201).json(view);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}
+
+exports.repostPost = async (req, res) => {
+  try {
+    const { user_id, post_id } = req.body;
+
+    // Создаем новый просмотр
+    const view = await RepostView.create(req.body);
+
+    // Увеличиваем счетчик лайков в посте
+    await Post.increment('reposts_count', {
       where: { id: post_id }
     });
     res.status(201).json(view);
