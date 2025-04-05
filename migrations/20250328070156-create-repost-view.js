@@ -26,15 +26,12 @@ module.exports = {
         defaultValue: new Date()
       }
     },
-      {
-        indexes: [
-          {
-            unique: true,
-            fields: ['user_id', 'post_id']
-          }
-        ]
-      },
       );
+    await queryInterface.addConstraint('repost_views', {
+      fields: ['user_id', 'post_id'],
+      type: 'unique',
+      name: 'repost_unique_constraint'
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('repost_views');

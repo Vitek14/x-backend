@@ -84,6 +84,9 @@ exports.createPost = async (req, res) => {
       return res.status(403).json({ error: "User mismatch!" });
     }
     else {
+      if (!req.body.content && !req.body.parent_post_id) {
+        return res.status(400).json({ error: "Post doesn't have a content!" });
+      }
       const post = await Post.create(req.body);
       res.status(201).json(post);
     }

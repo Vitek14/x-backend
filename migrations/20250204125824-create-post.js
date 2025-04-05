@@ -15,7 +15,7 @@ module.exports = {
       },
       content: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,  // Needs to make repost that don't have a content, but have parent_id
       },
       image_url: {
         type: Sequelize.TEXT,

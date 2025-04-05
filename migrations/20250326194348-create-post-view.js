@@ -28,15 +28,12 @@ module.exports = {
         defaultValue: new Date()
       },
     },
-      {
-        indexes: [
-          {
-            unique: true,
-            fields: ['user_id', 'post_id']
-          }
-        ]
-      },
     );
+    await queryInterface.addConstraint('post_views', {
+      fields: ['user_id', 'post_id'],
+      type: 'unique',
+      name: 'user_post_unique_constraint'
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('post_views');
