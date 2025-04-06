@@ -24,7 +24,7 @@ This backend is designed to work in tandem with the [frontend repository](https:
 ---
 
 **Next Steps**:  
-[➔ Proceed to Installation Instructions](#installation)  
+[➔ Proceed to Installation Instructions](https://github.com/Vitek14/twitter#installation)  
 [➔ View Frontend Repository](https://github.com/Vitek14/twitter)
 
 ---
