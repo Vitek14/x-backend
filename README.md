@@ -34,3 +34,26 @@ This backend is designed to work in tandem with the [frontend repository](https:
 - PostgreSQL database
 - Frontend setup from [twitter repository](https://github.com/Vitek14/twitter)
 - Basic understanding of REST APIs and environment variables
+
+## Legal Disclaimer
+
+**Important Notice**  
+This project is strictly **educational** in nature and was created for learning purposes only. It is not:
+
+- Associated with or endorsed by X Corp. (formerly Twitter) or any of its affiliates
+- Intended to replicate or compete with x.com
+- Designed for commercial use
+- Meant to harm, defame, or infringe upon the intellectual property of any company
+
+All references to Twitter/X functionality and branding are used:
+- Solely for educational demonstration
+- Under fair use principles
+- Without claim to original ownership
+
+The codebase is intentionally simplified and lacks many critical features required for a production environment. This implementation does not represent security best practices for authentication or database management.
+
+**Trademarks**  
+Any mentioned trademarks (Twitter, X, etc.) belong to their respective owners. The "Twitter Clone" naming is used purely for descriptive clarity, not as an official designation.
+
+**Non-Commercial**  
+This project is open-source and freely available for educational use only.
